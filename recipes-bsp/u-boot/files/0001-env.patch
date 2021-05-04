@@ -1,0 +1,142 @@
+diff -Naurw ./arch/arm/lib/bootm.c ../git/arch/arm/lib/bootm.c
+--- ./arch/arm/lib/bootm.c	2021-05-04 10:44:47.345621403 +0200
++++ ../git/arch/arm/lib/bootm.c	2021-05-04 10:45:11.941247823 +0200
+@@ -310,7 +310,12 @@
+ 	debug("## Transferring control to Linux (at address %08lx)" \
+ 		"...\n", (ulong) kernel_entry);
+ 	bootstage_mark(BOOTSTAGE_ID_RUN_OS);
++
++	printf("\nNOT Starting kernel ...\n" );
+ 	announce_and_cleanup(fake);
++	printf("NOT Starting kernel ...\n" );
++	while( 1 )
++	  ;
+ 
+ 	if (IMAGE_ENABLE_OF_LIBFDT && images->ft_len)
+ 		r2 = (unsigned long)images->ft_addr;
+diff -Naurw ./common/board_f.c ../git/common/board_f.c
+--- ./common/board_f.c	2021-05-04 10:44:47.597617592 +0200
++++ ../git/common/board_f.c	2021-05-04 10:45:12.037246359 +0200
+@@ -171,6 +171,22 @@
+ 	return 0;
+ }
+ 
++
++static int bla_bla(void)
++{
++	volatile int num = 1;
++
++	puts("bla-bla7:  \n");
++
++	while ( !num ) {
++	  volatile int a;
++
++	  (void )a;
++	}
++
++	return 0;
++}
++
+ static int announce_dram_init(void)
+ {
+ 	puts("DRAM:  ");
+@@ -926,6 +942,7 @@
+ #if defined(CONFIG_HARD_SPI)
+ 	init_func_spi,
+ #endif
++	bla_bla,
+ 	announce_dram_init,
+ 	/* TODO: unify all these dram functions? */
+ #if defined(CONFIG_ARM) || defined(CONFIG_X86) || defined(CONFIG_NDS32) || \
+diff -Naurw ./common/env_common.c ../git/common/env_common.c
+--- ./common/env_common.c	2021-05-04 10:44:47.601617531 +0200
++++ ../git/common/env_common.c	2021-05-04 10:45:12.037246359 +0200
+@@ -194,6 +194,7 @@
+ 	env_t *ep = (env_t *)buf;
+ 	int ret;
+ 
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 	if (check) {
+ 		uint32_t crc;
+ 
+diff -Naurw ./drivers/core/device.c ../git/drivers/core/device.c
+--- ./drivers/core/device.c	2021-05-04 10:44:47.657616684 +0200
++++ ../git/drivers/core/device.c	2021-05-04 10:45:12.041246298 +0200
+@@ -249,6 +249,7 @@
+ 	int ret;
+ 	int seq;
+ 
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 	if (!dev)
+ 		return -EINVAL;
+ 
+@@ -258,6 +259,7 @@
+ 	drv = dev->driver;
+ 	assert(drv);
+ 
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 	/* Allocate private data if requested and not reentered */
+ 	if (drv->priv_auto_alloc_size && !dev->priv) {
+ 		dev->priv = alloc_priv(drv->priv_auto_alloc_size, drv->flags);
+@@ -305,6 +307,7 @@
+ 			return 0;
+ 	}
+ 
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 	seq = uclass_resolve_seq(dev);
+ 	if (seq < 0) {
+ 		ret = seq;
+@@ -347,6 +350,7 @@
+ 		}
+ 	}
+ 
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 	ret = uclass_post_probe_device(dev);
+ 	if (ret)
+ 		goto fail_uclass;
+diff -Naurw ./net/eth_legacy.c ../git/net/eth_legacy.c
+--- ./net/eth_legacy.c	2021-05-04 10:44:47.885613236 +0200
++++ ../git/net/eth_legacy.c	2021-05-04 10:45:12.093245504 +0200
+@@ -136,6 +136,7 @@
+ 	unsigned char env_enetaddr[6];
+ 	int ret = 0;
+ 
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 	eth_getenv_enetaddr_by_index(base_name, eth_number, env_enetaddr);
+ 
+ 	if (!is_zero_ethaddr(env_enetaddr)) {
+@@ -154,7 +155,9 @@
+ 		eth_setenv_enetaddr_by_index(base_name, eth_number,
+ 					     dev->enetaddr);
+ 	} else if (is_zero_ethaddr(dev->enetaddr)) {
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ #ifdef CONFIG_NET_RANDOM_ETHADDR
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 		net_random_ethaddr(dev->enetaddr);
+ 		printf("\nWarning: %s (eth%d) using random MAC address - %pM\n",
+ 		       dev->name, eth_number, dev->enetaddr);
+diff -Naurw ./net/net.c ../git/net/net.c
+--- ./net/net.c	2021-05-04 10:44:47.889613176 +0200
++++ ../git/net/net.c	2021-05-04 10:45:12.093245504 +0200
+@@ -342,8 +342,11 @@
+ 
+ static void net_init_loop(void)
+ {
+-	if (eth_get_dev())
++  printf( "**** %s %i\n", __func__, __LINE__ );
++  if (eth_get_dev()) {
++	printf( "**** %s %i\n", __func__, __LINE__ );
+ 		memcpy(net_ethaddr, eth_get_ethaddr(), 6);
++  }
+ 
+ 	return;
+ }
+@@ -1287,6 +1290,8 @@
+ 
+ static int net_check_prereq(enum proto_t protocol)
+ {
++  printf( "**** %s %i\n", __func__, __LINE__ );
++
+ 	switch (protocol) {
+ 		/* Fall through */
+ #if defined(CONFIG_CMD_PING)
