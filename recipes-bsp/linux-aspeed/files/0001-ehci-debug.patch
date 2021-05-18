@@ -1,0 +1,180 @@
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-evb.dts b/arch/arm/boot/dts/aspeed-ast2500-evb.dts
+index 8bec21ed0de5..dcac4654214d 100644
+--- a/arch/arm/boot/dts/aspeed-ast2500-evb.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-evb.dts
+@@ -117,7 +117,7 @@ &vhub {
+ 	status = "okay";
+ };
+ 
+-&ehci1 {
++&ehci0 {
+ 	status = "okay";
+ };
+ 
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 5db536ccfcd6..445d94ed30c9 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -89,6 +89,7 @@ EXPORT_SYMBOL_GPL(regmap_check_range_table);
+ 
+ bool regmap_writeable(struct regmap *map, unsigned int reg)
+ {
++    printk( KERN_ALERT "**** %s %i   regmap: %s  reg: 0x%04x\n", __func__, (int )__LINE__, map->name, reg );
+ 	if (map->max_register && reg > map->max_register)
+ 		return false;
+ 
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index b5db2b2d0901..05a0734b12d0 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -128,6 +128,29 @@ static inline unsigned ehci_read_frame_index(struct ehci_hcd *ehci)
+ 
+ /*-------------------------------------------------------------------------*/
+ 
++static void ehci_dump_reg( struct ehci_hcd *ehci, u32 addr, int cnt )
++{
++  int ret;
++  char buf[256];
++  u32 val;
++  u32 *addru;
++
++  addru = (u32 *)( (void __iomem *)ehci->caps + addr );
++  sprintf( buf, KERN_ALERT "**** EHCI 0x%03x: ", addr );
++  while( cnt > 0 ) {
++	val = ehci_readl( ehci, (void __iomem *)addru );
++	sprintf( buf + strlen(buf), " 0x%08x", val );
++	addru++;
++	cnt--;
++  }
++
++  if( !ret ) {
++	strcat( buf, "\n" );
++	printk( buf );
++  }
++
++}
++
+ /*
+  * ehci_handshake - spin reading hc until handshake completes or fails
+  * @ptr: address of hc register to be read
+@@ -150,6 +173,7 @@ int ehci_handshake(struct ehci_hcd *ehci, void __iomem *ptr,
+ {
+ 	u32	result;
+ 
++	printk( KERN_ALERT "**** %s %i\n", __func__, (int )__LINE__ );
+ 	do {
+ 		result = ehci_readl(ehci, ptr);
+ 		if (result == ~(u32)0)		/* card removed */
+@@ -580,6 +604,8 @@ static int ehci_run (struct usb_hcd *hcd)
+ 
+ 	/* EHCI spec section 4.1 */
+ 
++	ehci_dump_reg( ehci, 0x20, 4 );
++
+ 	ehci_writel(ehci, ehci->periodic_dma, &ehci->regs->frame_list);
+ 	ehci_writel(ehci, (u32)ehci->async->qh_dma, &ehci->regs->async_next);
+ 
+@@ -671,6 +697,12 @@ int ehci_setup(struct usb_hcd *hcd)
+ 	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
+ 	int retval;
+ 
++	printk( KERN_ALERT "**** %s %i   hc_capbase addr: 0x%08x\n", __func__, (int )__LINE__, (int )ehci->caps );
++	ehci_dump_reg( ehci, 0, 3 );
++	ehci_dump_reg( ehci, 0x20, 4 );
++	ehci_dump_reg( ehci, 0x30, 3 );
++	ehci_dump_reg( ehci, 0x60, 2 );
++
+ 	ehci->regs = (void __iomem *)ehci->caps +
+ 	    HC_LENGTH(ehci, ehci_readl(ehci, &ehci->caps->hc_capbase));
+ 	dbg_hcs_params(ehci, "reset");
+@@ -692,6 +724,9 @@ int ehci_setup(struct usb_hcd *hcd)
+ 		return retval;
+ 	}
+ 
++	printk( KERN_ALERT "**** %s %i\n", __func__, (int )__LINE__ );
++	ehci_dump_reg( ehci, 0x20, 4 );
++
+ 	ehci_reset(ehci);
+ 
+ 	return 0;
+diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+index a48dd3fac153..139d71610723 100644
+--- a/drivers/usb/host/ehci-platform.c
++++ b/drivers/usb/host/ehci-platform.c
+@@ -35,9 +35,13 @@
+ #include <linux/usb/hcd.h>
+ #include <linux/usb/ehci_pdriver.h>
+ #include <linux/usb/of.h>
++#include <linux/regmap.h>
++#include <linux/mfd/syscon.h>
+ 
+ #include "ehci.h"
+ 
++#include "../drivers/base/regmap/internal.h"
++
+ #define DRIVER_DESC "EHCI generic platform driver"
+ #define EHCI_MAX_CLKS 4
+ #define hcd_to_ehci_priv(h) ((struct ehci_platform_priv *)hcd_to_ehci(h)->priv)
+@@ -236,6 +240,42 @@ static const struct soc_device_attribute quirk_poll_match[] = {
+ 	{ /* sentinel*/ }
+ };
+ 
++
++static void scu_dump_reg( struct regmap *scu, u32 addr, int cnt )
++{
++  int ret;
++  char buf[256];
++  u32 val;
++
++  sprintf( buf, KERN_ALERT "**** SCU 0x%03x: ", addr );
++  while( cnt > 0 ) {
++	ret = regmap_read( scu, addr, &val );
++	if( ret ) {
++	  printk( KERN_ALERT "**** %s %i   ret: %i\n", __func__, (int )__LINE__, ret );
++	  break;
++	}
++	else
++	  sprintf( buf + strlen(buf), " 0x%08x", val );
++	addr += 4;
++	cnt--;
++  }
++
++  if( !ret ) {
++	strcat( buf, "\n" );
++	printk( buf );
++  }
++
++}
++
++static void scu_update_reg( struct regmap *scu, u32 addr, u32 mask, u32 val )
++{
++  int ret;
++
++  ret = regmap_update_bits( scu, addr, mask, val );
++  if ( ret )
++	printk( KERN_ALERT "**** %s %i   ret: %i\n", __func__, (int )__LINE__, ret );
++}
++
+ static int ehci_platform_probe(struct platform_device *dev)
+ {
+ 	struct usb_hcd *hcd;
+@@ -244,6 +284,19 @@ static int ehci_platform_probe(struct platform_device *dev)
+ 	struct ehci_platform_priv *priv;
+ 	struct ehci_hcd *ehci;
+ 	int err, irq, clk = 0;
++	struct regmap *scu;
++
++	printk( KERN_ALERT "**** %s %i\n", __func__, (int )__LINE__ );
++
++	scu = syscon_regmap_lookup_by_compatible("aspeed,ast2500-scu");
++	if (IS_ERR(scu))
++	  printk( KERN_ALERT "**** %s %i\n", __func__, (int )__LINE__ );
++	else
++	  printk( KERN_ALERT "**** %s %i   regmap: %s\n", __func__, (int )__LINE__, scu->name );
++
++	scu_dump_reg( scu, 0, 4 );
++	scu_dump_reg( scu, 0x10, 4 );
++	scu_dump_reg( scu, 0x90, 4 );
+ 
+ 	if (usb_disabled())
+ 		return -ENODEV;
