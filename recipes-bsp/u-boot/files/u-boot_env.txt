@@ -3,7 +3,7 @@ bootargs=console=ttyS4,115200n8 root=/dev/ram rw
 bootcmd=bootm 20080000
 bootdelay=3
 eth1addr=ec:5e:fc:b0:2a:bf
-ethact=FTGMAC100#1
+ethprime=FTGMAC100#1
 spi_dma=yes
 stderr=serial
 stdin=serial
