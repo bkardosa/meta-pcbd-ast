@@ -1,0 +1,53 @@
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+index dcac4654214d..86c91a0bd171 100644
+--- a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+@@ -25,8 +25,13 @@ reserved-memory {
+ 		#size-cells = <1>;
+ 		ranges;
+ 
++		vga_memory: framebuffer@9c000000 {
++			no-map;
++			reg = <0x9c000000 0x04000000>;	/* 64M */
++		};
++
+ 		gfx_memory: framebuffer {
+-			size = <0x01000000>;
++			size = <0x04000000>;
+ 			alignment = <0x01000000>;
+ 			compatible = "shared-dma-pool";
+ 			reusable;
+@@ -59,6 +64,21 @@ &spi2 {
+ 	status = "okay";
+ };
+ 
++&uart1 {
++	/* X44 RS-232 connector */
++	status = "okay";
++
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_txd1_default
++			&pinctrl_rxd1_default
++			&pinctrl_nrts1_default
++			&pinctrl_ndtr1_default
++			&pinctrl_ndsr1_default
++			&pinctrl_ncts1_default
++			&pinctrl_ndcd1_default
++			&pinctrl_nri1_default>;
++};
++
+ &uart5 {
+ 	status = "okay";
+ };
+@@ -117,6 +137,11 @@ &vhub {
+ 	status = "okay";
+ };
+ 
++&video {
++	status = "okay";
++	memory-region = <&vga_memory>;
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };

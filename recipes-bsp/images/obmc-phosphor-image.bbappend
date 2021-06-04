@@ -1,5 +1,8 @@
-OBMC_IMAGE_EXTRA_INSTALL_append_congax7-ast2500 = " bmcweb"
-OBMC_IMAGE_EXTRA_INSTALL_append_congax7-ast2500 = " webui-vue"
+OBMC_IMAGE_EXTRA_INSTALL_append_congax7-ast2500 = " \
+    bmcweb \
+    webui-vue \
+    v4l-utils \
+    "
 
 
 python do_insert_uboot_env() {
