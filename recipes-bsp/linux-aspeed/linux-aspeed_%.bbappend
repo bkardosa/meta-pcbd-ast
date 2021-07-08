@@ -6,4 +6,5 @@ SRC_URI += "file://fragment-03-video-buf.cfg"
 
 SRC_URI += "file://0001-ehci-debug.patch"
 SRC_URI += "file://0002-dts-kvm-sol.patch"
+SRC_URI += "file://0003-dts-gpio.patch"
 

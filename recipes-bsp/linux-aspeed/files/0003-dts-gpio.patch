@@ -1,0 +1,88 @@
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+index 86c91a0bd171..78ca7e2ae8dd 100644
+--- a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+@@ -2,6 +2,7 @@
+ /dts-v1/;
+ 
+ #include "aspeed-g5.dtsi"
++#include <dt-bindings/gpio/aspeed-gpio.h>
+ 
+ / {
+ 	model = "AST2500 EVB";
+@@ -37,6 +38,23 @@ gfx_memory: framebuffer {
+ 			reusable;
+ 		};
+ 	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		checkstop {
++			label = "checkstop";
++			gpios = <&gpio ASPEED_GPIO(L, 1) GPIO_ACTIVE_LOW>;
++			linux,code = <ASPEED_GPIO(L, 1)>;
++		};
++
++		id-button {
++			label = "id-button";
++			gpios = <&gpio ASPEED_GPIO(L, 2) GPIO_ACTIVE_LOW>;
++			linux,code = <ASPEED_GPIO(L, 2)>;
++		};
++	};
++
+ };
+ 
+ &fmc {
+@@ -70,13 +88,7 @@ &uart1 {
+ 
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_txd1_default
+-			&pinctrl_rxd1_default
+-			&pinctrl_nrts1_default
+-			&pinctrl_ndtr1_default
+-			&pinctrl_ndsr1_default
+-			&pinctrl_ncts1_default
+-			&pinctrl_ndcd1_default
+-			&pinctrl_nri1_default>;
++			&pinctrl_rxd1_default>;
+ };
+ 
+ &uart5 {
+@@ -154,3 +166,36 @@ &gfx {
+      status = "okay";
+      memory-region = <&gfx_memory>;
+ };
++
++&gpio {
++	gpio-line-names =
++	/*A0-A7*/	"","","","","","","","",
++	/*B0-B7*/	"","","","","","","","",
++	/*C0-C7*/	"","","","","","","","",
++	/*D0-D7*/	"","","","","","","","",
++	/*E0-E7*/	"","","","","","","","",
++	/*F0-F7*/	"","","","","","","","",
++	/*G0-G7*/	"","","","","","","","",
++	/*H0-H7*/	"","","","","","","","",
++	/*I0-I7*/	"","","","","","","","",
++	/*J0-J7*/	"","","","","","","","",
++	/*K0-K7*/	"","","","","","","","",
++	/*L0-L7*/	"","","","PWR_OK#","PWRBTN#","","","",
++	/*M0-M7*/	"","","","","","","","",
++	/*N0-N7*/	"","","","","","","","",
++	/*O0-O7*/	"","","","","","","","",
++	/*P0-P7*/	"","","","","","","","",
++	/*Q0-Q7*/	"","","","","","","","",
++	/*R0-R7*/	"","","","","","","","",
++	/*S0-S7*/	"","","","","","","","",
++	/*T0-T7*/	"","","","","","","","",
++	/*U0-U7*/	"","","","","","","","",
++	/*V0-V7*/	"","","","","","","","",
++	/*W0-W7*/	"","","","","","","","",
++	/*X0-X7*/	"","","","","","","","",
++	/*Y0-Y7*/	"","","","","","","","",
++	/*Z0-Z7*/	"","","","","","","","",
++	/*AA0-AA7*/	"","","","","","","","",
++	/*AB0-AB7*/	"","","","","","","","",
++	/*AC0-AC7*/	"","","","","","","","";
++};

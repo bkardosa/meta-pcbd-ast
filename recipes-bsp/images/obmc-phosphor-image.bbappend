@@ -1,7 +1,7 @@
 OBMC_IMAGE_EXTRA_INSTALL_append_congax7-ast2500 = " \
     bmcweb \
     webui-vue \
-    v4l-utils \
+    obmc-op-control-power \
     "
 
 

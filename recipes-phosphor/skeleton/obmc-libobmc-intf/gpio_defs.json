@@ -1,0 +1,26 @@
+{
+    "gpio_configs": {
+
+        "power_config": {
+            "power_good_in": "PWR_OK#",
+            "power_up_outs": [
+                { "name": "PWRBTN#", "polarity": false}
+            ],
+            "reset_outs": [
+            ]
+        }
+    },
+
+    "gpio_definitions": [
+        {
+            "name": "PWRBTN#",
+            "pin": "L4",
+            "direction": "out"
+        },
+        {
+            "name": "PWR_OK#",
+            "pin": "L3",
+            "direction": "in"
+        }
+    ]
+}
