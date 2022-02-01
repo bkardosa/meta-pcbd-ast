@@ -5,7 +5,7 @@ PR = "r0"
 
 DEPENDS += "libjpeg-turbo libv4l"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-${PV}:"
 
 SRC_URI = "git://github.com/twam/v4l2grab.git"
 SRCREV = "master"

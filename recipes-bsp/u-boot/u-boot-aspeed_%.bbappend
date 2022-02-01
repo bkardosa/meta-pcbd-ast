@@ -1,9 +1,9 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://0001-env.patch"
 SRC_URI += "file://u-boot_env.txt"
 
-do_compile_append() {
+do_compile:append() {
     if [ -n "${UBOOT_ENV}" ]
     then
         # Generate redundant environment image

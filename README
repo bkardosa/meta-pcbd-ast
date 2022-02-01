@@ -4,6 +4,10 @@ Build process:
 $ git clone https://github.com/openbmc/openbmc.git
 $ cd openbmc
 $ git clone https://gitea.pcbdesign.hu/bkardos/meta-pcbd-ast.git
-$ TEMPLATECONF=meta-pcbd-ast/meta-congax7-ast2500/conf/ . openbmc-env
+$ . setup congax7-ast2500
 $ bitbake obmc-phosphor-image
+
+$ cd tmp/deploy/images/congax7-ast2500
+$ sudo cp -L image-kernel /srv/tftp/
+$ sudo cp -L flash-congax7-ast2500 /srv/tftp/
 
