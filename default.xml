@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://github.com" name="github"/>
+
+  <default remote="github"/>
+  
+  <project name="openbmc" path="obmc-pcbd" revision="85c14d88f256d5e3529ea68cb3729c6af102a90e">
+    <project name="meta-pcbd-ast" path="meta-pcbd-ast" revision="dev-honister"/>
+  </project>
+</manifest>
