@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
   <remote fetch="https://github.com" name="github"/>
+  <remote fetch="https://gitea.pcbdesign.hu" name="gitea"/>
 
   <default remote="github"/>
-  
+
   <project name="openbmc/openbmc" path="obmc-pcbd" revision="85c14d88f256d5e3529ea68cb3729c6af102a90e"/>
-  <project name="bkardosa/meta-pcbd-ast" path="obmc-pcbd/meta-pcbd-ast" revision="dev-honister"/>
+  <project name="bkardos/meta-pcbd-ast" path="obmc-pcbd/meta-pcbd-ast" remote="gitea" revision="dev-honister"/>
 </manifest>
