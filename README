@@ -3,7 +3,7 @@ This README file contains information on the contents of the meta-pcbd-ast layer
 Build process:
 $ git clone https://github.com/openbmc/openbmc.git
 $ cd openbmc
-$ git clone https://gitea.pcbdesign.hu/bkardos/meta-pcbd-ast.git
+$ git clone https://gitea.pcbdesign.hu/bkardos/meta-pcbd-ast.git -b dev-honister
 $ . setup congax7-ast2500
 $ bitbake obmc-phosphor-image
 
