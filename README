@@ -1,13 +1,37 @@
 This README file contains information on the contents of the meta-pcbd-ast layer.
 
 Build process:
-$ git clone https://github.com/openbmc/openbmc.git
-$ cd openbmc
-$ git clone https://gitea.pcbdesign.hu/bkardos/meta-pcbd-ast.git -b dev-honister
-$ . setup congax7-ast2500
-$ bitbake obmc-phosphor-image
+  $ repo init -u https://gitea.pcbdesign.hu/bkardos/meta-pcbd-ast -b dev-honister
+  $ repo sync
+  $ cd obmc-pcbd
+  $ . setup congax7-ast2500
+  $ bitbake obmc-phosphor-image
 
-$ cd tmp/deploy/images/congax7-ast2500
-$ sudo cp -L image-kernel /srv/tftp/
-$ sudo cp -L flash-congax7-ast2500 /srv/tftp/
+Copy 32MB flash image to TFTP server folder:
+  $ cd tmp/deploy/images/congax7-ast2500
+  $ sudo cp -L flash-congax7-ast2500 /srv/tftp/
+
+Copy kernel only to TFTP folder:
+  $ sudo cp -L image-kernel /srv/tftp/
+
+
+Modify U-Boot to boot from TFTP server:
+  - break U-Boot autoboot by pressing a key
+    # setenv bootcmd dhcp image-kernel\; bootm
+    # saveenv
+    # reset
+
+Overwriting U-Boot partition only:
+  - break U-Boot autoboot by pressing a key
+    # dhcp
+    # tftp 0x83000000 flash-congax7-ast2500
+    # protect off all
+    # erase 0x20000000 0x2007ffff
+    # cp.l 0x83000000 0x20000000 0x20000
+
+Overwriting everything but U-Boot partition:
+    # dhcp
+    # tftp 0x83000000 flash-congax7-ast2500
+    # erase 0x20080000 0x21ffffff
+    # cp.l 0x83080000 0x20080000 0x7e0000
 
