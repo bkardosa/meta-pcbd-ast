@@ -2,6 +2,13 @@ OBMC_IMAGE_EXTRA_INSTALL:append:congax7-ast2500 = " \
     bmcweb \
     webui-vue \
     obmc-op-control-power \
+    iperf3 \
+    ethtool \
+    tcpdump \
+    python3 \
+    python3-pip \
+    python3-smbus \
+    usbutils \
     "
 
 

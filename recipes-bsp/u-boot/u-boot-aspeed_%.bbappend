@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://0001-env.patch"
 SRC_URI += "file://u-boot_env.txt"
+SRC_URI += "file://0002-flash.patch"
 
 do_compile:append() {
     if [ -n "${UBOOT_ENV}" ]
