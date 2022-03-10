@@ -1,4 +1,4 @@
-conga-X7EVAL Evaluation Board
+PCB486 BMC Board
 ================
 
 This is the ASPEED AST2500 evaluation board layer.

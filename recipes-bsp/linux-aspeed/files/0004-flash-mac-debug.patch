@@ -4,16 +4,16 @@ Date: Wed, 9 Mar 2022 15:34:34 +0100
 Subject: [PATCH] add new flash w25q01jv, FTGMAC debug messages
 
 ---
- arch/arm/boot/dts/aspeed-ast2500-congax7.dts |  3 +-
+ arch/arm/boot/dts/aspeed-ast2500-pcb486.dts |  3 +-
  drivers/mtd/spi-nor/winbond.c                |  2 +
  drivers/net/ethernet/faraday/ftgmac100.c     | 97 ++++++++++++++++++++
  drivers/net/phy/marvell.c                    | 15 +++
  4 files changed, 116 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 index 78c3bcfe7075..57330ab74195 100644
---- a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
-+++ b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+--- a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 @@ -64,7 +64,7 @@ flash@0 {
  		m25p,fast-read;
  		label = "bmc";

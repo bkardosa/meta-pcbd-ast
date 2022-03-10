@@ -4,18 +4,18 @@ Date: Wed, 2 Feb 2022 13:14:42 +0000
 Subject: [PATCH] ehci fixed
 
 ---
- arch/arm/boot/dts/aspeed-ast2500-congax7.dts | 131 +++++++++++++++++++
+ arch/arm/boot/dts/aspeed-ast2500-pcb486.dts | 131 +++++++++++++++++++
  drivers/base/regmap/regmap.c                 |   1 +
  drivers/usb/host/ehci-hcd.c                  |  35 +++++
  drivers/usb/host/ehci-platform.c             |  53 ++++++++
  4 files changed, 220 insertions(+)
- create mode 100644 arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+ create mode 100644 arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 
-diff --git a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 new file mode 100644
 index 000000000000..8bec21ed0de5
 --- /dev/null
-+++ b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 @@ -0,0 +1,131 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/dts-v1/;

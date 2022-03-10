@@ -4,13 +4,13 @@ Date: Wed, 2 Feb 2022 14:46:03 +0100
 Subject: [PATCH] VGA, SOL fixed
 
 ---
- arch/arm/boot/dts/aspeed-ast2500-congax7.dts | 27 +++++++++++++++++++-
+ arch/arm/boot/dts/aspeed-ast2500-pcb486.dts | 27 +++++++++++++++++++-
  1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 index 8bec21ed0de5..71839969e9cc 100644
---- a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
-+++ b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+--- a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 @@ -25,8 +25,13 @@
  		#size-cells = <1>;
  		ranges;

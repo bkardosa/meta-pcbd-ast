@@ -1,7 +1,7 @@
-diff --git a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 index 86c91a0bd171..78ca7e2ae8dd 100644
---- a/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
-+++ b/arch/arm/boot/dts/aspeed-ast2500-congax7.dts
+--- a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
 @@ -2,6 +2,7 @@
  /dts-v1/;
  

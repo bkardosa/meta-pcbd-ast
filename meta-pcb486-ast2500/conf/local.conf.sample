@@ -1,4 +1,4 @@
-MACHINE ??= "congax7-ast2500"
+MACHINE ??= "pcb486-ast2500"
 DISTRO ?= "openbmc-openpower"
 PACKAGE_CLASSES ?= "package_rpm"
 SANITY_TESTED_DISTROS:append ?= " *"

@@ -1,2 +1,2 @@
-FILESEXTRAPATHS:prepend:congax7-ast2500 := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend:pcb486-ast2500 := "${THISDIR}/${PN}:"
 
