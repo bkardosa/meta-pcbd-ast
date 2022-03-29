@@ -9,8 +9,13 @@ OBMC_IMAGE_EXTRA_INSTALL:append:pcb486-ast2500 = " \
     python3-pip \
     python3-smbus \
     usbutils \
+    mtd-utils \
+    sudo \
     "
 
+EXTRA_USERS_PARAMS:pn-obmc-phosphor-image = " \
+  usermod -p .Oi2v9eH48IwM root; \
+  "
 
 python do_insert_uboot_env() {
     import subprocess
