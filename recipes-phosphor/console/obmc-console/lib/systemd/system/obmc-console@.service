@@ -1,0 +1,10 @@
+[Unit]
+Description=%i Console Server
+ConditionPathExists=/etc/obmc-console/server.%i.conf
+Requires=vuart-bridge@%i.service
+After=vuart-bridge@%i.service
+
+[Service]
+# Instance ID is the VUART basename
+ExecStart=/usr/sbin/obmc-console-server --config /etc/obmc-console/server.%i.conf %i
+SyslogIdentifier=%i-console-server

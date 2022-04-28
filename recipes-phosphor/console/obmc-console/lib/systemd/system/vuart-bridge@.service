@@ -1,0 +1,9 @@
+[Unit]
+Description=%i TCP-UART bridge
+PartOf=obmc-console@%i.service
+
+[Service]
+ExecStartPre=/sbin/ifconfig eth2 10.10.10.1
+ExecStart=/usr/bin/socat -d -d pty,link=/dev/%i,raw,echo=0,waitslave tcp:10.10.10.11:4000
+ExecStartPost=sleep 2
+SyslogIdentifier=%i-vuart-bridge

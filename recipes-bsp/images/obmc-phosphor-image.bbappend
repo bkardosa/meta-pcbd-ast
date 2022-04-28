@@ -11,6 +11,8 @@ OBMC_IMAGE_EXTRA_INSTALL:append:pcb486-ast2500 = " \
     usbutils \
     mtd-utils \
     sudo \
+    socat \
+    minicom \
     "
 
 EXTRA_USERS_PARAMS:pn-obmc-phosphor-image = " \

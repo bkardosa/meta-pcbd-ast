@@ -1,0 +1,40 @@
+From 88b87bdbfb763cf9b41ed159244d1602b986c529 Mon Sep 17 00:00:00 2001
+From: Botond Kardos <bkardos70@gmail.com>
+Date: Mon, 25 Apr 2022 17:16:33 +0200
+Subject: [PATCH] add dts support for FRU EEPROM + GPIO expander on NVME board
+
+---
+ arch/arm/boot/dts/aspeed-ast2500-pcb486.dts | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
+index 3f68168e262b..819b3c436ded 100644
+--- a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
+@@ -137,6 +137,23 @@ gpio@70 {
+ 	};
+ };
+ 
++&i2c9 {
++	status = "okay";
++
++	eeprom@50 {
++		compatible = "atmel,24c64";
++		reg = <0x50>;
++		pagesize = <32>;
++	};
++
++	gpio@70 {
++		compatible = "nxp,pca9538";
++		gpio-controller;
++		#gpio-cells = <2>;
++		reg = <0x70>;
++	};
++};
++
+ &sdmmc {
+ 	status = "okay";
+ };
+-- 
+2.25.1
+
