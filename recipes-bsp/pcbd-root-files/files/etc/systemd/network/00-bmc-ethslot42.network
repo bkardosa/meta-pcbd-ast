@@ -1,0 +1,4 @@
+[Match]
+Name=ethslot42
+[Network]
+Address=10.42.10.1/24

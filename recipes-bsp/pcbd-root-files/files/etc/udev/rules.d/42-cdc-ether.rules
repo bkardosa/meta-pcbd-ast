@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="net", DEVPATH=="/devices/platform/ahb/1e6b0000.usb/usb2/2-2/2-2:1.0/net/*", NAME="ethslot42"
