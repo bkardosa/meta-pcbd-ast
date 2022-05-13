@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ad
 SRC_URI = "file://etc/udhcpd.conf"
 SRC_URI += "file://etc/udev/rules.d/42-cdc-ether.rules"
 SRC_URI += "file://etc/systemd/network/00-bmc-ethslot42.network"
+SRC_URI += "file://home/root/README.txt"
 
 
 do_install() {
@@ -16,10 +17,10 @@ do_install() {
     install -m 644 ${WORKDIR}/etc/udhcpd.conf ${D}${sysconfdir}
     install -m 644 ${WORKDIR}/etc/udev/rules.d/42-cdc-ether.rules ${D}${sysconfdir}/udev/rules.d/
     install -m 644 ${WORKDIR}/etc/systemd/network/00-bmc-ethslot42.network ${D}${sysconfdir}/systemd/network/
-    install -m 755 ${WORKDIR}/home/root/* ${D}/home/root/
+    install -m 644 ${WORKDIR}/home/root/* ${D}/home/root/
 }
 
-FILES_${PN} += "${sysconfdir}"
-FILES_${PN} += "/home/root"
+FILES:${PN} += "${sysconfdir}"
+FILES:${PN} += "/home/root/README.txt"
 
-RDEPENDS_${PN} += "udev systemd"
+RDEPENDS:${PN} += "udev systemd"
