@@ -16,6 +16,7 @@ OBMC_IMAGE_EXTRA_INSTALL:append:pcb486-ast2500 = " \
     avahi-daemon \
     avahi-utils \
     pcbd-root-files \
+    python3-protobuf \
     "
 
 EXTRA_USERS_PARAMS:pn-obmc-phosphor-image = " \

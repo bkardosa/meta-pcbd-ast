@@ -1,0 +1,72 @@
+From e41a2aef89305a407149011762caa33d325c1cd3 Mon Sep 17 00:00:00 2001
+From: Botond Kardos <bkardos70@gmail.com>
+Date: Fri, 10 Jun 2022 12:56:15 +0200
+Subject: [PATCH] add dts support for FRU EEPROM + GPIO expander on PSU board
+
+---
+ arch/arm/boot/dts/aspeed-ast2500-pcb486.dts | 35 +++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
+index 819b3c436ded..68ab2c963ef7 100644
+--- a/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
++++ b/arch/arm/boot/dts/aspeed-ast2500-pcb486.dts
+@@ -110,6 +110,21 @@ &mac1 {
+ 	pinctrl-0 = <&pinctrl_rgmii2_default &pinctrl_mdio2_default>;
+ };
+ 
++&i2c0 {
++	/* BMC_PSU_SMBUS -> goes nowhere on PCB626 */
++	/* status = "okay"; */
++};
++
++&i2c1 {
++	/* BMC_BP_SMBUS -> goes nowhere on PCB626 */
++	/* status = "okay"; */
++};
++
++&i2c2 {
++	/* PWRBRD_SMBUS -> goes to PCB499-PSU on PCB626 */
++	status = "okay";
++};
++
+ &i2c6 {
+ 	status = "okay";
+ 
+@@ -121,6 +136,25 @@ eeprom@50 {
+ };
+ 
+ &i2c7 {
++	/* BMC_SWITCH_I2C -> goes to PCB452-CPU on PCB626 */
++	status = "okay";
++
++	eeprom@50 {
++		compatible = "atmel,24c64";
++		reg = <0x50>;
++		pagesize = <32>;
++	};
++
++	gpio@70 {
++		compatible = "nxp,pca9538";
++		gpio-controller;
++		#gpio-cells = <2>;
++		reg = <0x70>;
++	};
++};
++
++&i2c8 {
++	/* SWITCH_AUX_I2C -> goes to PCB499-PSU on PCB626 */
+ 	status = "okay";
+ 
+ 	eeprom@50 {
+@@ -138,6 +172,7 @@ gpio@70 {
+ };
+ 
+ &i2c9 {
++	/* BMC_GPIOEXP_EEPROM_I2C -> goes to PCB456-NVME on PCB626 */
+ 	status = "okay";
+ 
+ 	eeprom@50 {
+-- 
+2.25.1
+
