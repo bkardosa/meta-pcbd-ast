@@ -35,3 +35,20 @@ Overwriting everything but U-Boot partition:
     # erase 0x20080000 0x21ffffff
     # cp.l 0x83080000 0x20080000 0x7e0000
 
+Boot from NFS
+If U-Boot can't handle eth0 but kernel can, it is possible to boot kernel from
+flash, and mount rootfs from NFS.
+Build kernel and copy fitImage-pcb486-ast2500.bin to a running pcb486-ast2500 instance.
+Then:
+    # dd if=fitImage-pcb486-ast2500.bin bs=1M of=/dev/mtdblock3 && sync && /sbin/reboot
+  - break U-Boot autoboot by pressing a key
+    # setenv bootargs console=ttyS4,115200n8 root=/dev/nfs rw nfsroot=10.42.0.1:/srv/nfs/pcb486-ast2500,vers=3 ip=dhcp
+    # saveenv
+    # reset
+  - host must be 10.42.0.1, DHCP server must run
+  - rootfs must be at /srv/nfs/pcb486-ast2500
+
+Reverting to flash-based boot:
+  - copy flash-pcb486-ast2500 to /home/root/ folder of NFS rootfs
+    # dd if=flash-pcb486-ast2500 bs=1M of=/dev/mtdblock0 && sync && /sbin/reboot
+ 
